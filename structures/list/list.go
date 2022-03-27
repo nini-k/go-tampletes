@@ -1,9 +1,7 @@
 package list
 
-type any interface{}
-
 type linkedListNode struct {
-	value any
+	value interface{}
 	next  *linkedListNode
 }
 
@@ -13,7 +11,7 @@ type LinkedList struct {
 	size int
 }
 
-func (l *LinkedList) AddAtTail(value any) {
+func (l *LinkedList) AddAtTail(value interface{}) {
 	tmp := &linkedListNode{value: value}
 	if l.tail == nil {
 		l.tail = tmp
@@ -25,7 +23,7 @@ func (l *LinkedList) AddAtTail(value any) {
 	l.size++
 }
 
-func (l *LinkedList) AddAtHead(value any) {
+func (l *LinkedList) AddAtHead(value interface{}) {
 	tmp := &linkedListNode{value: value}
 	if l.head == nil {
 		l.head = tmp
@@ -37,14 +35,14 @@ func (l *LinkedList) AddAtHead(value any) {
 	l.size++
 }
 
-func (l *LinkedList) Head() (any, bool) {
+func (l *LinkedList) Head() (interface{}, bool) {
 	if l.head == nil {
 		return nil, false
 	}
 	return l.head.value, true
 }
 
-func (l *LinkedList) Tail() (any, bool) {
+func (l *LinkedList) Tail() (interface{}, bool) {
 	if l.tail == nil {
 		return nil, false
 	}
@@ -64,7 +62,7 @@ func (l *LinkedList) RemoveAtHead() {
 	l.size--
 }
 
-func (l *LinkedList) ForEach(foo func(value any)) {
+func (l *LinkedList) ForEach(foo func(value interface{})) {
 	cur := l.head
 	for cur != nil {
 		foo(cur.value)
@@ -80,8 +78,8 @@ func (l *LinkedList) IsEmpty() bool {
 	return l.head == nil && l.tail == nil
 }
 
-func (l *LinkedList) ConvertToSlice() []any {
-	out, cur := make([]any, 0, l.size), l.head
+func (l *LinkedList) ConvertToSlice() []interface{} {
+	out, cur := make([]interface{}, 0, l.size), l.head
 	for cur != nil {
 		out = append(out, cur.value)
 		cur = cur.next
@@ -89,6 +87,6 @@ func (l *LinkedList) ConvertToSlice() []any {
 	return out
 }
 
-func NewLinkedList() LinkedList {
+func New() LinkedList {
 	return LinkedList{}
 }
