@@ -27,39 +27,39 @@ func convertIntToAnyTypeSlice(in []int) []interface{} {
 
 func TestLinkedList(t *testing.T) {
 	var (
-		someList = New()
-		values0  = []int{1, 2, 3, 4, 5, 6}
-		values1  = reverseSlice(values0)
+		list           = New()
+		values         = []int{1, 2, 3, 4, 5, 6}
+		reversedValues = reverseSlice(values)
 	)
 
 	t.Run("linked list is empty", func(t *testing.T) {
 		var (
 			expected = true
-			actual   = someList.IsEmpty()
+			actual   = list.IsEmpty()
 		)
 
 		require.Equal(t, expected, actual)
 	})
 
 	t.Run("try remove at head from empty linked list", func(t *testing.T) {
-		someList.RemoveAtHead()
+		list.RemoveAtHead()
 
 		var (
 			expected = 0
-			actual   = someList.Size()
+			actual   = list.Size()
 		)
 
 		require.Equal(t, expected, actual)
 	})
 
 	t.Run("add at tail linked list", func(t *testing.T) {
-		for _, p := range values0 {
-			someList.AddAtTail(p)
+		for _, p := range values {
+			list.AddAtTail(p)
 		}
 
 		var (
-			expected = len(values0)
-			actual   = someList.Size()
+			expected = len(values)
+			actual   = list.Size()
 		)
 
 		require.Equal(t, expected, actual)
@@ -67,8 +67,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after adding values at tail", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values0)
-			actual   = someList.ConvertToSlice()
+			expected = convertIntToAnyTypeSlice(values)
+			actual   = list.ConvertToSlice()
 		)
 
 		require.Equal(t, expected, actual)
@@ -76,11 +76,11 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("handle for each nodes after adding values at tail", func(t *testing.T) {
 		var (
-			expected = values0
+			expected = values
 			actual   = make([]int, 0, len(expected))
 		)
 
-		someList.ForEach(func(value interface{}) {
+		list.ForEach(func(value interface{}) {
 			actual = append(actual, value.(int))
 		})
 
@@ -88,13 +88,13 @@ func TestLinkedList(t *testing.T) {
 	})
 
 	t.Run("add at head values into linked list", func(t *testing.T) {
-		for _, p := range values0 {
-			someList.AddAtHead(p)
+		for _, p := range values {
+			list.AddAtHead(p)
 		}
 
 		var (
-			expected = len(values0) + len(values1)
-			actual   = someList.Size()
+			expected = len(values) + len(reversedValues)
+			actual   = list.Size()
 		)
 
 		require.Equal(t, expected, actual)
@@ -102,8 +102,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after adding values at head", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(append(values1, values0...))
-			actual   = someList.ConvertToSlice()
+			expected = convertIntToAnyTypeSlice(append(reversedValues, values...))
+			actual   = list.ConvertToSlice()
 		)
 
 		require.Equal(t, expected, actual)
@@ -111,11 +111,11 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("handle for each nodes after adding values at head", func(t *testing.T) {
 		var (
-			expected = append(values1, values0...)
+			expected = append(reversedValues, values...)
 			actual   = make([]int, 0, len(expected))
 		)
 
-		someList.ForEach(func(value interface{}) {
+		list.ForEach(func(value interface{}) {
 			actual = append(actual, value.(int))
 		})
 
@@ -123,13 +123,13 @@ func TestLinkedList(t *testing.T) {
 	})
 
 	t.Run("remove at head values from linked list", func(t *testing.T) {
-		for range values1 {
-			someList.RemoveAtHead()
+		for range reversedValues {
+			list.RemoveAtHead()
 		}
 
 		var (
-			expected = len(values0)
-			actual   = someList.Size()
+			expected = len(values)
+			actual   = list.Size()
 		)
 
 		require.Equal(t, expected, actual)
@@ -137,8 +137,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after removing values at head", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values0)
-			actual   = someList.ConvertToSlice()
+			expected = convertIntToAnyTypeSlice(values)
+			actual   = list.ConvertToSlice()
 		)
 
 		require.Equal(t, expected, actual)
@@ -146,11 +146,11 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("handle for each nodes after removing values at head", func(t *testing.T) {
 		var (
-			expected = values0
+			expected = values
 			actual   = make([]int, 0, len(expected))
 		)
 
-		someList.ForEach(func(value interface{}) {
+		list.ForEach(func(value interface{}) {
 			actual = append(actual, value.(int))
 		})
 
@@ -159,8 +159,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("get head value from linked list", func(t *testing.T) {
 		var (
-			expected  interface{} = values0[0]
-			actual, _             = someList.Head()
+			expected  interface{} = values[0]
+			actual, _             = list.Head()
 		)
 
 		require.Equal(t, expected, actual)
@@ -168,8 +168,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("get tail value from linked list", func(t *testing.T) {
 		var (
-			expected  interface{} = values0[len(values0)-1]
-			actual, _             = someList.Tail()
+			expected  interface{} = values[len(values)-1]
+			actual, _             = list.Tail()
 		)
 
 		require.Equal(t, expected, actual)
