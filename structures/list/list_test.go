@@ -151,8 +151,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("get head value from linked list", func(t *testing.T) {
 		var (
-			expected  interface{} = values[0]
-			actual, _             = list.Head()
+			expected  = values[0]
+			actual, _ = list.Head()
 		)
 
 		require.Equal(t, expected, actual)
@@ -160,8 +160,8 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("get tail value from linked list", func(t *testing.T) {
 		var (
-			expected  interface{} = values[len(values)-1]
-			actual, _             = list.Tail()
+			expected  = values[len(values)-1]
+			actual, _ = list.Tail()
 		)
 
 		require.Equal(t, expected, actual)
