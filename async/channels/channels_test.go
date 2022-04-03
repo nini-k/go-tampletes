@@ -21,7 +21,7 @@ func TestChannels(t *testing.T) {
 	t.Run("async", func(t *testing.T) {
 		var (
 			expected = errors.New("some error")
-			actual   = <-async(func() error {
+			actual   = <-async[error](func() error {
 				return errors.New("some error")
 			})
 		)
@@ -39,7 +39,7 @@ func TestChannels(t *testing.T) {
 
 		asyncs := make([]chan error, 0, len(functions))
 		for _, f := range functions {
-			asyncs = append(asyncs, async(f))
+			asyncs = append(asyncs, async[error](f))
 		}
 
 		var (
@@ -54,7 +54,7 @@ func TestChannels(t *testing.T) {
 			actual = make([]error, 0, len(expected))
 		)
 
-		for e := range merge(asyncs...) {
+		for e := range merge[error](asyncs...) {
 			actual = append(actual, e)
 		}
 

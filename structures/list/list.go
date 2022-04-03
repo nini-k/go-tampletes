@@ -1,18 +1,22 @@
 package list
 
-type linkedListNode struct {
-	value interface{}
-	next  *linkedListNode
+type linkedListNode[T any] struct {
+	value T
+	next  *linkedListNode[T]
 }
 
-type LinkedList struct {
-	tail *linkedListNode
-	head *linkedListNode
+type LinkedList[T any] struct {
+	tail *linkedListNode[T]
+	head *linkedListNode[T]
 	size int
 }
 
-func (l *LinkedList) AddAtTail(value interface{}) {
-	tmp := &linkedListNode{value: value}
+func New[T any]() LinkedList[T] {
+	return LinkedList[T]{}
+}
+
+func (l *LinkedList[T]) AddAtTail(value T) {
+	tmp := &linkedListNode[T]{value: value}
 	if l.tail == nil {
 		l.tail = tmp
 		l.head = l.tail
@@ -23,8 +27,8 @@ func (l *LinkedList) AddAtTail(value interface{}) {
 	l.size++
 }
 
-func (l *LinkedList) AddAtHead(value interface{}) {
-	tmp := &linkedListNode{value: value}
+func (l *LinkedList[T]) AddAtHead(value T) {
+	tmp := &linkedListNode[T]{value: value}
 	if l.head == nil {
 		l.head = tmp
 		l.tail = l.head
@@ -35,21 +39,21 @@ func (l *LinkedList) AddAtHead(value interface{}) {
 	l.size++
 }
 
-func (l *LinkedList) Head() (interface{}, bool) {
+func (l *LinkedList[T]) Head() (out T, ok bool) {
 	if l.head == nil {
-		return nil, false
+		return
 	}
 	return l.head.value, true
 }
 
-func (l *LinkedList) Tail() (interface{}, bool) {
+func (l *LinkedList[T]) Tail() (out T, ok bool) {
 	if l.tail == nil {
-		return nil, false
+		return
 	}
 	return l.tail.value, true
 }
 
-func (l *LinkedList) RemoveAtHead() {
+func (l *LinkedList[T]) RemoveAtHead() {
 	if l.head == nil {
 		return
 	}
@@ -62,31 +66,27 @@ func (l *LinkedList) RemoveAtHead() {
 	l.size--
 }
 
-func (l *LinkedList) ForEach(foo func(value interface{})) {
+func (l *LinkedList[T]) ForEach(fn func(value T)) {
 	cur := l.head
 	for cur != nil {
-		foo(cur.value)
+		fn(cur.value)
 		cur = cur.next
 	}
 }
 
-func (l *LinkedList) Size() int {
+func (l *LinkedList[T]) Size() int {
 	return l.size
 }
 
-func (l *LinkedList) IsEmpty() bool {
+func (l *LinkedList[T]) IsEmpty() bool {
 	return l.head == nil && l.tail == nil
 }
 
-func (l *LinkedList) ConvertToSlice() []interface{} {
-	out, cur := make([]interface{}, 0, l.size), l.head
+func (l *LinkedList[T]) ConvertToSlice() []T {
+	out, cur := make([]T, 0, l.size), l.head
 	for cur != nil {
 		out = append(out, cur.value)
 		cur = cur.next
 	}
 	return out
-}
-
-func New() LinkedList {
-	return LinkedList{}
 }

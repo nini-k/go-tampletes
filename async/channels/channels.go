@@ -2,8 +2,8 @@ package channels
 
 import "sync"
 
-func async(fn func() error) chan error {
-	out := make(chan error)
+func async[T any](fn func() T) chan T {
+	out := make(chan T)
 	go func() {
 		defer close(out)
 		out <- fn()
@@ -11,14 +11,14 @@ func async(fn func() error) chan error {
 	return out
 }
 
-func merge(chs ...chan error) chan error {
+func merge[T any](chs ...chan T) chan T {
 	var (
 		wg  = sync.WaitGroup{}
-		out = make(chan error, len(chs))
+		out = make(chan T, len(chs))
 	)
 	wg.Add(len(chs))
 	for _, c := range chs {
-		go func(ch chan error) {
+		go func(ch chan T) {
 			defer wg.Done()
 			val := <-ch
 			out <- val
