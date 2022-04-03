@@ -17,17 +17,9 @@ func reverseSlice(in []int) []int {
 	return out
 }
 
-func convertIntToAnyTypeSlice(in []int) []interface{} {
-	out := make([]interface{}, 0, len(in))
-	for _, val := range in {
-		out = append(out, val)
-	}
-	return out
-}
-
 func TestLinkedList(t *testing.T) {
 	var (
-		list           = New()
+		list           = New[int]()
 		values         = []int{1, 2, 3, 4, 5, 6}
 		reversedValues = reverseSlice(values)
 	)
@@ -67,7 +59,7 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after adding values at tail", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values)
+			expected = values
 			actual   = list.ConvertToSlice()
 		)
 
@@ -80,8 +72,8 @@ func TestLinkedList(t *testing.T) {
 			actual   = make([]int, 0, len(expected))
 		)
 
-		list.ForEach(func(value interface{}) {
-			actual = append(actual, value.(int))
+		list.ForEach(func(value int) {
+			actual = append(actual, value)
 		})
 
 		require.Equal(t, expected, actual)
@@ -102,7 +94,7 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after adding values at head", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(append(reversedValues, values...))
+			expected = append(reversedValues, values...)
 			actual   = list.ConvertToSlice()
 		)
 
@@ -115,8 +107,8 @@ func TestLinkedList(t *testing.T) {
 			actual   = make([]int, 0, len(expected))
 		)
 
-		list.ForEach(func(value interface{}) {
-			actual = append(actual, value.(int))
+		list.ForEach(func(value int) {
+			actual = append(actual, value)
 		})
 
 		require.Equal(t, expected, actual)
@@ -137,7 +129,7 @@ func TestLinkedList(t *testing.T) {
 
 	t.Run("convert to slice after removing values at head", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values)
+			expected = values
 			actual   = list.ConvertToSlice()
 		)
 
@@ -150,8 +142,8 @@ func TestLinkedList(t *testing.T) {
 			actual   = make([]int, 0, len(expected))
 		)
 
-		list.ForEach(func(value interface{}) {
-			actual = append(actual, value.(int))
+		list.ForEach(func(value int) {
+			actual = append(actual, value)
 		})
 
 		require.Equal(t, expected, actual)

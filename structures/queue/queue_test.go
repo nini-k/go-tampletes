@@ -6,17 +6,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func convertIntToAnyTypeSlice(in []int) []interface{} {
-	out := make([]interface{}, 0, len(in))
-	for _, val := range in {
-		out = append(out, val)
-	}
-	return out
-}
-
 func TestQueue(t *testing.T) {
 	var (
-		queue  = New()
+		queue  = New[int]()
 		values = []int{1, 2, 3, 4, 5, 6}
 	)
 
@@ -55,7 +47,7 @@ func TestQueue(t *testing.T) {
 
 	t.Run("convert to slice after adding values", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values)
+			expected = values
 			actual   = queue.ConvertToSlice()
 		)
 
@@ -64,8 +56,8 @@ func TestQueue(t *testing.T) {
 
 	t.Run("pop values", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(values)
-			actual   = make([]interface{}, 0, len(expected))
+			expected = values
+			actual   = make([]int, 0, len(expected))
 		)
 
 		for !queue.IsEmpty() {

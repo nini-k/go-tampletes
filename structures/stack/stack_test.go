@@ -17,17 +17,9 @@ func reverseSlice(in []int) []int {
 	return out
 }
 
-func convertIntToAnyTypeSlice(in []int) []interface{} {
-	out := make([]interface{}, 0, len(in))
-	for _, val := range in {
-		out = append(out, val)
-	}
-	return out
-}
-
 func TestStack(t *testing.T) {
 	var (
-		stack          = New()
+		stack          = New[int]()
 		values         = []int{1, 2, 3, 4, 5, 6}
 		reversedValues = reverseSlice(values)
 	)
@@ -67,7 +59,7 @@ func TestStack(t *testing.T) {
 
 	t.Run("convert to slice after adding values", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(reversedValues)
+			expected = reversedValues
 			actual   = stack.ConvertToSlice()
 		)
 
@@ -76,8 +68,8 @@ func TestStack(t *testing.T) {
 
 	t.Run("pop values", func(t *testing.T) {
 		var (
-			expected = convertIntToAnyTypeSlice(reversedValues)
-			actual   = make([]interface{}, 0, len(expected))
+			expected = reversedValues
+			actual   = make([]int, 0, len(expected))
 		)
 
 		for !stack.IsEmpty() {
